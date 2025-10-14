@@ -1,10 +1,13 @@
 #include "neko_blocker.h"
 
 #include <Windows.h>
+#include <qaction.h>
+#include <qapplication.h>
+#include <qicon.h>
+#include <qmenu.h>
 #include <qobject.h>
-
-#include "my_push_button.h"
-#include "ui_neko_blocker.h"
+#include <qsystemtrayicon.h>
+#include <qwidget.h>
 
 bool NekoBlocker::isLocked = false;
 HHOOK NekoBlocker::keyboardHook = NULL;
@@ -13,11 +16,33 @@ HHOOK NekoBlocker::keyboardHook = NULL;
 /// 建構子
 /// </summary>
 /// <param name="parent"></param>
-NekoBlocker::NekoBlocker(QWidget *parent) : QMainWindow(parent) {
-  ui.setupUi(this);
+NekoBlocker::NekoBlocker() {
+  // 設定icon
+  trayIcon = new QSystemTrayIcon(QIcon(":/NekoBlocker/keyboard.png"), this);
 
-  QObject::connect(ui.enableButton, &MyPushButton::toggled, this,
-                   &NekoBlocker::onEnableButtonToggled);
+  // 建立系統匣選單
+  QMenu* menu = new QMenu();
+  QAction* lockAction = new QAction(tr("Lock"), this);
+  QAction* exitAction = new QAction(tr("Exit"), this);
+  lockAction->setCheckable(true);
+
+  QObject::connect(lockAction, &QAction::toggled, this, [=](bool checked) {
+    if (checked) {
+      lockKeyboard();
+      trayIcon->setIcon(QIcon(":/NekoBlocker/keyboard_off.png"));
+    } else {
+      unlockKeyboard();
+      trayIcon->setIcon(QIcon(":/NekoBlocker/keyboard.png"));
+    }
+  });
+  QObject::connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
+
+  menu->addAction(lockAction);
+  menu->addSeparator();
+  menu->addAction(exitAction);
+
+  trayIcon->setContextMenu(menu);
+  trayIcon->show();
 }
 
 /// <summary>
@@ -44,7 +69,7 @@ LRESULT CALLBACK NekoBlocker::keyboardProc(int nCode, WPARAM wParam,
 /// <summary>
 /// 鍵盤上鎖
 /// </summary>
-void NekoBlocker::lock() {
+void NekoBlocker::lockKeyboard() {
   if (!keyboardHook) {
     keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboardProc,
                                     GetModuleHandle(NULL), 0);
@@ -56,7 +81,7 @@ void NekoBlocker::lock() {
 /// <summary>
 /// 鍵盤解鎖
 /// </summary>
-void NekoBlocker::unlock() { isLocked = false; }
+void NekoBlocker::unlockKeyboard() { isLocked = false; }
 
 /// <summary>
 /// 移除鍵盤掛鉤
@@ -66,17 +91,4 @@ void NekoBlocker::uninstallHook() {
     UnhookWindowsHookEx(keyboardHook);
     keyboardHook = NULL;
   }
-}
-
-/// <summary>
-/// 觸發按鈕啟用/停用事件
-/// </summary>
-void NekoBlocker::onEnableButtonToggled() {
-  if (ui.enableButton->isChecked()) {
-    lock();
-  } else {
-    unlock();
-  }
-
-  ui.enableButton->setText(isLocked ? tr("Disable") : tr("Enable"));
 }

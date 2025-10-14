@@ -92,18 +92,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="my_push_button.cpp" />
     <QtRcc Include="neko_blocker.qrc" />
-    <QtUic Include="neko_blocker.ui" />
     <QtMoc Include="neko_blocker.h" />
     <ClCompile Include="neko_blocker.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <None Include="cpp.hint" />
-    <None Include="neko-blocker.ico" />
-    <ResourceCompile Include="neko-blocker.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="my_push_button.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
