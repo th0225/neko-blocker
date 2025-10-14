@@ -98,6 +98,7 @@
     <QtMoc Include="neko_blocker.h" />
     <ClCompile Include="neko_blocker.cpp" />
     <ClCompile Include="main.cpp" />
+    <None Include="cpp.hint" />
     <None Include="neko-blocker.ico" />
     <ResourceCompile Include="neko-blocker.rc" />
   </ItemGroup>

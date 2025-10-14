@@ -55,7 +55,10 @@ QPushButton:disabled {
 }</string>
     </property>
     <property name="text">
-     <string>啟用</string>
+     <string>Enable</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="timeEdit">
@@ -102,7 +105,7 @@ QLineEdit:disabled {
      <rect>
       <x>220</x>
       <y>0</y>
-      <width>21</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>
@@ -112,7 +115,7 @@ QLineEdit:disabled {
      </font>
     </property>
     <property name="text">
-     <string>分</string>
+     <string>Min</string>
     </property>
    </widget>
    <widget class="QLabel" name="leftTimeLabel">
