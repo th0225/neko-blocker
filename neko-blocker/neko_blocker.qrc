@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/NekoBlocker">
-        <file>keyboard.png</file>
         <file>keyboard_off.png</file>
+        <file>keyboard.png</file>
     </qresource>
 </RCC>

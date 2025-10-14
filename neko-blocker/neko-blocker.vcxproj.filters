@@ -41,4 +41,20 @@
   <ItemGroup>
     <None Include="cpp.hint" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="neko-blocker.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="keyboard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="keyboard_off.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="neko-blocker.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
